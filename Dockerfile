@@ -39,7 +39,7 @@ RUN rm -rf /var/cache/apk/*
 
 # Install nodejs for musl linux
 COPY files/node-linux-x64-musl.tar.gz /root/node-linux-x64-musl.tar.gz
-RUN tar -xvzf /root/node-linux-x64-musl.tar.gz -C /root
+RUN tar -xzf /root/node-linux-x64-musl.tar.gz -C /root
 RUN rm /root/node-linux-x64-musl.tar.gz
 ENV PATH="/root/node-${FULL_NODE_VERSION}-linux-x64-musl/bin:${PATH}"
 RUN echo "export PATH=$PATH" > /etc/environment
@@ -47,6 +47,9 @@ RUN node -v
 
 # Install node tools
 RUN npm install --global yarn
+RUN yarn -v
+
+# Install node deps
 RUN npm i -g pino pino-pretty
 
 # Install uplift
