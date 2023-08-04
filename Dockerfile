@@ -22,15 +22,14 @@ RUN rm -rf /usr/local/aws-cli/v2/current/dist/aws_completer /usr/local/aws-cli/v
 RUN find /usr/local/aws-cli/v2/current/dist/awscli/botocore/data -name examples-1.json -delete
 
 # Build final docker image now that all binaries are OK
-FROM node:16-alpine as base
+FROM FROM docker:20 as base
 
+ARG NODE_VERSION
+ENV NODE_VERSION $NODE_VERSION
+ARG FULL_NODE_VERSION
+ENV FULL_NODE_VERSION $FULL_NODE_VERSION
 ARG UPLIFT_VERSION
 ENV UPLIFT_VERSION $UPLIFT_VERSION
-
-# Entrypoint file
-ENV DOCKER_DRIVER overlay
-COPY entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Install alpine packages
 RUN apk update
@@ -38,6 +37,14 @@ RUN apk upgrade --available
 RUN apk add --no-cache curl wget zip tar git openssl openssh-client jq
 RUN apk add --no-cache bash tar gzip yarn
 RUN rm -rf /var/cache/apk/*
+
+# Install nodejs for musl linux
+COPY files/node-linux-x64-musl.tar.gz /root/node-linux-x64-musl.tar.gz
+RUN tar -xvzf /root/node-linux-x64-musl.tar.gz -C /root
+RUN rm /root/node-linux-x64-musl.tar.gz
+ENV PATH="/root/node-${FULL_NODE_VERSION}-linux-x64-musl/bin:${PATH}"
+RUN echo "export PATH=$PATH" > /etc/environment
+RUN node -v
 
 # Install node tools
 RUN npm i -g pino pino-pretty
