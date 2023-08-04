@@ -24,6 +24,9 @@ RUN find /usr/local/aws-cli/v2/current/dist/awscli/botocore/data -name examples-
 # Build final docker image now that all binaries are OK
 FROM node:16-alpine as base
 
+ARG UPLIFT_VERSION
+ENV UPLIFT_VERSION $UPLIFT_VERSION
+
 # Entrypoint file
 ENV DOCKER_DRIVER overlay
 COPY entrypoint.sh /usr/local/bin/
@@ -38,6 +41,14 @@ RUN rm -rf /var/cache/apk/*
 
 # Install node tools
 RUN npm i -g pino pino-pretty
+
+# Install uplift
+COPY files/uplift.tar.gz /root/uplift.tar.gz
+RUN tar -xvzf /root/uplift.tar.gz -d /root
+RUN rm /root/uplift.tar.gz
+RUN mv /root/uplift /usr/local/bin/uplift
+RUN chmod +x /usr/local/bin/uplift
+RUN uplift -v
 
 # Install AWS CLI V2
 COPY --from=builder /usr/local/aws-cli/ /usr/local/aws-cli/
