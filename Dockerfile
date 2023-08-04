@@ -22,7 +22,7 @@ RUN rm -rf /usr/local/aws-cli/v2/current/dist/aws_completer /usr/local/aws-cli/v
 RUN find /usr/local/aws-cli/v2/current/dist/awscli/botocore/data -name examples-1.json -delete
 
 # Build final docker image now that all binaries are OK
-FROM FROM docker:20 as base
+FROM docker:20 as base
 
 ARG NODE_VERSION
 ENV NODE_VERSION $NODE_VERSION
