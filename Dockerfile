@@ -22,7 +22,7 @@ RUN rm -rf /usr/local/aws-cli/v2/current/dist/aws_completer /usr/local/aws-cli/v
 RUN find /usr/local/aws-cli/v2/current/dist/awscli/botocore/data -name examples-1.json -delete
 
 # Build final docker image now that all binaries are OK
-FROM docker:20 as base
+FROM docker:24 as base
 
 ARG NODE_VERSION
 ENV NODE_VERSION $NODE_VERSION
@@ -35,7 +35,7 @@ ENV UPLIFT_VERSION $UPLIFT_VERSION
 RUN apk update
 RUN apk upgrade --available
 RUN apk add --no-cache python3 py3-pip curl wget zip tar git openssl openssh-client jq bash tar gzip openrc libstdc++
-RUN pip3 install --upgrade pip docker-compose yq --ignore-installed distlib
+RUN pip3 install --upgrade pip docker-compose
 RUN rm -rf /var/cache/apk/*
 
 # Install nodejs for musl linux
