@@ -12,9 +12,13 @@ ENV UPLIFT_VERSION $UPLIFT_VERSION
 RUN apk update
 RUN apk upgrade --available
 RUN apk add --no-cache aws-cli docker-compose curl wget zip tar git openssl openssh-client jq bash tar gzip openrc libstdc++
-# RUN pip3 install --upgrade pip docker-compose
 RUN rm -rf /var/cache/apk/*
+
+# Test AWSCLI
 RUN aws --version
+
+# Test docker-compose
+RUN docker-compose -v
 
 # Install nodejs for musl linux
 COPY files/node-linux-x64-musl.tar.gz /root/node-linux-x64-musl.tar.gz
@@ -34,7 +38,7 @@ RUN npm i -g pino pino-pretty
 # Install uplift
 COPY files/uplift.tar.gz /root/uplift.tar.gz
 RUN mkdir -p /root/uplift_temp
-RUN tar -xvzf /root/uplift.tar.gz C /root/uplift_temp
+RUN tar -xvzf /root/uplift.tar.gz -C /root/uplift_temp
 RUN rm /root/uplift.tar.gz
 RUN mv /root/uplift_temp/uplift /usr/local/bin/uplift
 RUN rm -Rf /root/uplift_temp
