@@ -34,8 +34,7 @@ ENV UPLIFT_VERSION $UPLIFT_VERSION
 # Install alpine packages
 RUN apk update
 RUN apk upgrade --available
-RUN apk add --no-cache curl wget zip tar git openssl openssh-client jq
-RUN apk add --no-cache bash tar gzip yarn
+RUN apk add --no-cache curl wget zip tar git openssl openssh-client jq bash tar gzip
 RUN rm -rf /var/cache/apk/*
 
 # Install nodejs for musl linux
@@ -47,6 +46,7 @@ RUN echo "export PATH=$PATH" > /etc/environment
 RUN node -v
 
 # Install node tools
+RUN npm install --global yarn
 RUN npm i -g pino pino-pretty
 
 # Install uplift
@@ -73,6 +73,7 @@ FROM base AS test
 RUN node -v && \
     npm -v && \
     yarn -v && \
+    uplift version && \
     aws --version
 
 # Create Image after tests
