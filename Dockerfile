@@ -44,9 +44,11 @@ RUN npm i -g pino pino-pretty
 
 # Install uplift
 COPY files/uplift.tar.gz /root/uplift.tar.gz
-RUN tar -xvzf /root/uplift.tar.gz -d /root
+RUN mkdir -p /root/uplift_temp
+RUN tar -xvzf /root/uplift.tar.gz C /root/uplift_temp
 RUN rm /root/uplift.tar.gz
-RUN mv /root/uplift /usr/local/bin/uplift
+RUN mv /root/uplift_temp/uplift /usr/local/bin/uplift
+RUN rm -Rf /root/uplift_temp
 RUN chmod +x /usr/local/bin/uplift
 RUN uplift -v
 
