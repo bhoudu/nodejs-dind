@@ -34,7 +34,8 @@ ENV UPLIFT_VERSION $UPLIFT_VERSION
 # Install alpine packages
 RUN apk update
 RUN apk upgrade --available
-RUN apk add --no-cache curl wget zip tar git openssl openssh-client jq bash tar gzip
+RUN apk add --no-cache python3 py3-pip curl wget zip tar git openssl openssh-client jq bash tar gzip openrc libstdc++
+RUN pip3 install --upgrade pip docker-compose yq --ignore-installed distlib
 RUN rm -rf /var/cache/apk/*
 
 # Install nodejs for musl linux
