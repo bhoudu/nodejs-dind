@@ -43,7 +43,7 @@ RUN rm /root/uplift.tar.gz
 RUN mv /root/uplift_temp/uplift /usr/local/bin/uplift
 RUN rm -Rf /root/uplift_temp
 RUN chmod +x /usr/local/bin/uplift
-RUN uplift -v
+RUN uplift version
 
 # Entrypoint
 ENTRYPOINT ["/bin/bash", "-l", "-c"]
@@ -55,6 +55,7 @@ RUN node -v && \
     npm -v && \
     yarn -v && \
     uplift version && \
+    docker-compose -v && \
     aws --version
 
 # Create Image after tests
