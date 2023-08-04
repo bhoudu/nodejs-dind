@@ -11,13 +11,10 @@ ENV UPLIFT_VERSION $UPLIFT_VERSION
 # Install alpine packages
 RUN apk update
 RUN apk upgrade --available
-RUN apk add --no-cache aws-cli python3 py3-pip curl wget zip tar git openssl openssh-client jq bash tar gzip openrc libstdc++
+RUN apk add --no-cache aws-cli docker-compose curl wget zip tar git openssl openssh-client jq bash tar gzip openrc libstdc++
 # RUN pip3 install --upgrade pip docker-compose
 RUN rm -rf /var/cache/apk/*
 RUN aws --version
-
-# Install python deps
-RUN pip3 install docker-compose
 
 # Install nodejs for musl linux
 COPY files/node-linux-x64-musl.tar.gz /root/node-linux-x64-musl.tar.gz
